@@ -1,0 +1,16 @@
+{
+  "name": "login",
+  "version": "1.0.0",
+  "description": "Login test for NodeJs",
+  "main": "server.js",
+  "scripts": {
+    "test": "node server.js"
+  },
+  "keywords": [
+    "login",
+    "auth",
+    "test"
+  ],
+  "author": "DjSall",
+  "license": "ISC"
+}
