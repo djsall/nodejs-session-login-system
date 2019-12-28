@@ -8,13 +8,24 @@
 }
 
 .loginForm {
-	margin-left: 0.25vh;
-	margin-top: 0.25vh;
+	margin: 10vh auto;
 	display: flex;
 	flex-direction: column;
 	max-width: 20vh;
 }
 
-.loginForm>* {
+.loginForm>input {
 	margin-bottom: 0.25vh;
+	min-height: 3.5vh;
+}
+
+.loginForm>input[type='text'],
+.loginForm>input[type='password'] {
+	padding: 5px;
+}
+
+.loginForm>input[type='submit'] {
+	background: #666;
+	color: #fff;
+	border: 0;
 }
