@@ -1,68 +1,58 @@
 @import url('https://fonts.googleapis.com/css?family=Open+Sans&display=swap');
 
 * {
-  margin: 0px;
-  padding: 0px;
-  box-sizing: border-box;
-  font-family: 'Open Sans', sans-serif;
+	margin: 0px;
+	padding: 0px;
+	box-sizing: border-box;
+	font-family: 'Open Sans', sans-serif;
 }
 
 .loginForm {
-  margin: 10vh auto 0 auto;
-  display: flex;
-  flex-direction: column;
-  max-width: 20vh;
+	margin: 10vh auto 0 auto;
+	display: flex;
+	flex-direction: column;
+	max-width: 20vh;
 }
 
 .buttonContainer {
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  max-width: 20vh;
+	margin: 0 auto;
+	display: flex;
+	flex-direction: column;
+	max-width: 20vh;
 }
 
-.buttonContainer > button {
-  background: #888;
-  color: #fff;
-  border: 1px solid black;
-  margin-bottom: 0.25vh;
-  min-height: 3.5vh;
+.button {
+	background: #888;
+	color: #fff;
+	border: 1px solid black;
+	margin-bottom: 0.25vh;
+	min-height: 3.5vh;
 }
 
-.buttonContainer > button:hover {
-  background: #777;
-  color: #fff;
-  border: 1px solid black;
+.button:hover {
+	background: #777;
+	color: #fff;
+	border: 1px solid black;
 }
 
-.loginForm > input {
-  margin-bottom: 0.25vh;
-  min-height: 3.5vh;
+.buttonContainerNc {
+	display: flex;
+	margin: 2.5vh;
+	max-width: 20vh;
+	min-width: 10vh;
 }
 
-.loginForm > input[type='text'],
-.loginForm > input[type='password'] {
-  padding: 5px;
+.left {
+	flex: 1;
 }
 
-.loginForm > input[type='submit'] {
-  background: #888;
-  color: #fff;
-  border: 1px solid black;
+
+.loginForm>input {
+	margin-bottom: 0.25vh;
+	min-height: 3.5vh;
 }
 
-.loginForm > input[type='submit']:hover {
-  background: #777;
-}
-
-.loginForm > button {
-  min-height: 3.5vh;
-  margin-bottom: 0.25vh;
-  background: #888;
-  color: #fff;
-  border: 1px solid black;
-}
-
-.loginForm > button:hover {
-  background: #777;
+.loginForm>input[type='text'],
+.loginForm>input[type='password'] {
+	padding: 5px;
 }
