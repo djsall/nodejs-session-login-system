@@ -1,95 +1,149 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const mysql = require('mysql');
 const session = require('express-session');
+const cookieParser = require('cookie-parser');
+const User = require(__dirname + '/models/user');
 
 const app = express();
 
 const pubPath = __dirname + '/public/';
 const port = 3000;
 
-const con = mysql.createConnection({
-  host: 'localhost',
-  user: 'root',
-  password: '',
-  database: 'test'
-});
-
-app.use(
-  session({
-    secret: 'very secret secret',
-    secure: false
-  })
-);
-
 app.use(express.static(pubPath));
 
 app.use(bodyParser.json());
 
 app.use(
-  bodyParser.urlencoded({
-    extended: true
-  })
+	bodyParser.urlencoded({
+		extended: true
+	})
 );
 
-app.get('/', (req, res) => {
-  if (req.session.loggedin) res.sendFile(pubpath + 'index_loggedin.html');
-  else res.sendFile(pubPath + 'index.html');
+// initialize cookie-parser to allow us access the cookies stored in the browser.
+app.use(cookieParser());
+
+// initialize express-session to allow us track the logged-in user across sessions.
+app.use(session({
+	key: 'user_sid',
+	secret: 'somerandonstuffs',
+	resave: false,
+	saveUninitialized: false,
+	cookie: {
+		expires: 600000
+	}
+}));
+
+
+// This middleware will check if user's cookie is still saved in browser and user is not set, then automatically log the user out.
+// This usually happens when you stop your express server after login, your cookie still remains saved in the browser.
+app.use((req, res, next) => {
+	if (req.cookies.user_sid && !req.session.user) {
+		res.clearCookie('user_sid');
+	}
+	next();
 });
 
-app.get('/login', (req, res) => {
-  res.sendFile(pubPath + 'login.html');
+
+// middleware function to check for logged-in users
+let sessionChecker = (req, res, next) => {
+	if (req.session.user && req.cookies.user_sid) {
+		res.redirect('/dashboard');
+	} else {
+		next();
+	}
+};
+
+
+// route for Home-Page
+app.get('/', sessionChecker, (req, res) => {
+	res.redirect('/login');
 });
 
-app.get('/register', (req, res) => {
-  res.sendFile(pubPath + 'register.html');
-});
-app.post('/api/reg', (req, res) => {
-  let email = req.body.email;
-  let username = req.body.username;
-  let password = req.body.password;
-  let password2 = req.body.password2;
 
-  if (email && username && password === password2) {
-    con.query(
-      'SELECT * FROM users WHERE username = ?',
-      [username],
-      (err, results, fields) => {
-        if (results.length > 0) res.send('This username is already taken!');
-        else {
-          con.query(
-            'INSERT INTO users (email, username, password) values (?, ?, ?)',
-            [email, username, password],
-            error => {
-              if (error) throw error;
-            }
-          );
-          req.session.loggedin = true;
-          req.session.username = username;
-          res.sendFile(pubpath + '/index_loggedin.html');
-        }
-      }
-    );
-  } else res.send('Wrong information input!');
+// route for user signup
+app.route('/signup')
+	.get(sessionChecker, (req, res) => {
+		res.sendFile(__dirname + '/public/signup.html');
+	})
+	.post((req, res) => {
+		if (req.body.password === req.body.password2) {
+			User.create({
+					username: req.body.username,
+					email: req.body.email,
+					password: req.body.password
+				})
+				.then(user => {
+					req.session.user = user.dataValues;
+					res.redirect('/dashboard');
+				})
+				.catch(error => {
+					res.redirect('/signup');
+				});
+		} else {
+			res.json({
+				Error: 'Passwords did not match.'
+			});
+		}
+	});
+
+
+// route for user Login
+app.route('/login')
+	.get(sessionChecker, (req, res) => {
+		res.sendFile(__dirname + '/public/login.html');
+	})
+	.post((req, res) => {
+		console.log(req.body);
+		let username = req.body.username,
+			password = req.body.password;
+
+		if (username.length > 0 && password.length > 0) {
+
+			User.findOne({
+				where: {
+					username: username
+				}
+			}).then(function (user) {
+				if (!user) {
+					res.redirect('/login');
+				} else if (!user.validPassword(password)) {
+					res.redirect('/login');
+				} else {
+					req.session.user = user.dataValues;
+					res.redirect('/dashboard');
+				}
+			});
+		}
+	});
+
+
+// route for user's dashboard
+app.get('/dashboard', (req, res) => {
+	if (req.session.user && req.cookies.user_sid) {
+		res.sendFile(__dirname + '/public/dashboard.html');
+	} else {
+		res.redirect('/login');
+	}
 });
-app.post('/api/auth', (req, res) => {
-  let username = req.body.username;
-  let password = req.body.password;
-  if (username && password) {
-    con.query(
-      'SELECT * FROM users WHERE username = ? AND password = ?',
-      [username, password],
-      (error, results, fields) => {
-        if (results.length > 0) {
-          req.session.loggedin = true;
-          req.session.username = username;
-          res.redirect('/');
-        } else res.send('Wrong username and/or password!');
-      }
-    );
-  }
+
+
+// route for user logout
+app.get('/logout', (req, res) => {
+	if (req.session.user && req.cookies.user_sid) {
+		res.clearCookie('user_sid');
+		res.redirect('/');
+	} else {
+		res.redirect('/login');
+	}
 });
+
+
+// route for handling 404 requests(unavailable routes)
+app.use(function (req, res, next) {
+	res.status(404).send("Sorry can't find that!")
+});
+
 
 app.listen(port, () => {
-  console.log('Example app listening on port ' + port + '!');
+	console.log('Example app listening on port ' + port + '!');
 });
