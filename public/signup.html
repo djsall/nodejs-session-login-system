@@ -16,13 +16,16 @@
 		<input type="text" name="username" placeholder="Username" pattern="[A-Za-z0-9._]{5,40}" required />
 		<input type="password" name="password" placeholder="Password" pattern="[A-Za-z0-9\.\*$ß \\\?\/]{4,50}" required />
 		<input type="password" name="password2" placeholder="Repeat Password" required>
-		<input type="submit" value="Register" />
+		<input type="submit" value="Sign up" />
 	</form>
 	<div class="buttonContainer">
 		<button id="loginBtn">Sign in</button>
 	</div>
-	<a href="/login">Sign in</a>
-
 </body>
+<script>
+	document.getElementById("loginBtn").addEventListener("click", () => {
+		document.location.replace("/login");
+	})
+</script>
 
 </html>
