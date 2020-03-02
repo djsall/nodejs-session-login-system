@@ -33,10 +33,12 @@
 	</div>
 </body>
 <script>
+	//select element by Id
 	function elById(elementId) {
 		return document.getElementById(elementId);
 	}
-
+	//hide an array of items, if unhideBool is true,
+	// it unhides the items that were hidden already
 	function hideOrUnhideArray(arrayName, unhideBool) {
 		arrayName.forEach(element => {
 			let itemClassList = elById(element).classList;
@@ -47,23 +49,25 @@
 				itemClassList.add("hidden");
 		});
 	}
-	//toggles hiding
+	//toggles hiding of each item in the array
 	function togleHideArrays(items) {
 		items.forEach(arrayName => {
 			hideOrUnhideArray(arrayName, true);
 		});
 	}
-	//hides everything
+	//hides everything in the arrays
 	function hideAllArrays(items) {
 		items.forEach(arrayName => {
 			hideOrUnhideArray(arrayName, false);
 		});
 	}
+	//one array per form-group, to hide and/or unhide the items
+	//needs to consist of itemId's
 	const items = [
 		["loginForm", "signupBtnCont", "signupBtn"],
 		["signupForm", "loginBtnCont", "loginBtn"]
 	];
-
+	//adding click listeners to the toggle buttons by Id
 	elById("signupBtn").addEventListener("click", () => {
 		togleHideArrays(items);
 	});
