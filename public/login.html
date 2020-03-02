@@ -33,25 +33,30 @@
 	</div>
 </body>
 <script>
-	function toggleHideArray(arrayName) {
-		arrayName.forEach(element => {
-			let itemClassList = document.getElementById(element).classList;
+	function togleHideArrays(items) {
+		items.forEach(arrayName => {
 
-			if (itemClassList.contains("hidden"))
-				itemClassList.remove("hidden");
-			else itemClassList.add("hidden");
+			arrayName.forEach(element => {
+
+				let itemClassList = document.getElementById(element).classList;
+
+				if (itemClassList.contains("hidden"))
+					itemClassList.remove("hidden");
+				else
+					itemClassList.add("hidden");
+			});
 		});
 	}
-	const loginItems = ["loginForm", "signupBtnCont", "signupBtn"];
-	const signupItems = ["signupForm", "loginBtnCont", "loginBtn"];
+	const items = [
+		["loginForm", "signupBtnCont", "signupBtn"],
+		["signupForm", "loginBtnCont", "loginBtn"]
+	];
 
 	document.getElementById("signupBtn").addEventListener("click", () => {
-		toggleHideArray(loginItems);
-		toggleHideArray(signupItems);
+		togleHideArrays(items);
 	});
 	document.getElementById("loginBtn").addEventListener("click", () => {
-		toggleHideArray(loginItems);
-		toggleHideArray(signupItems);
+		togleHideArrays(items);
 	});
 </script>
 
