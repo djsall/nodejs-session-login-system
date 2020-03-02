@@ -37,18 +37,26 @@
 		return document.getElementById(elementId);
 	}
 
+	function hideOrUnhideArray(arrayName, unhideBool) {
+		arrayName.forEach(element => {
+			let itemClassList = elById(element).classList;
+
+			if (itemClassList.contains("hidden") && unhideBool)
+				itemClassList.remove("hidden");
+			else if (!itemClassList.contains("hidden"))
+				itemClassList.add("hidden");
+		});
+	}
+	//toggles hiding
 	function togleHideArrays(items) {
 		items.forEach(arrayName => {
-
-			arrayName.forEach(element => {
-
-				let itemClassList = elById(element).classList;
-
-				if (itemClassList.contains("hidden"))
-					itemClassList.remove("hidden");
-				else
-					itemClassList.add("hidden");
-			});
+			hideOrUnhideArray(arrayName, true);
+		});
+	}
+	//hides everything
+	function hideAllArrays(items) {
+		items.forEach(arrayName => {
+			hideOrUnhideArray(arrayName, false);
 		});
 	}
 	const items = [
