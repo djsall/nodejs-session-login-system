@@ -10,19 +10,53 @@
 </head>
 
 <body>
-	<form action="login" method="post" class="loginForm">
+	<!-- login form -->
+	<form action="login" method="post" class="loginForm" id="loginForm">
 		<input type="text" name="username" placeholder="Username" required />
 		<input type="password" name="password" placeholder="Password" required />
 		<input type="submit" value="Login" class="button" />
 	</form>
-	<div class="buttonContainer">
+	<div class="buttonContainer" id="signupBtnCont">
 		<button id="signupBtn" class="button">Sign up</button>
+	</div>
+	<!-- signup form -->
+	<form action="signup" method="post" class="loginForm hidden" id="signupForm">
+		<input type="text" name="email" placeholder="E-Mail"
+			pattern="[A-Za-z0-9\.]{4,40}@[A-Za-z0-9\.-]{2,20}.[A-Za-z]{2,8}" required />
+		<input type="text" name="username" placeholder="Username" pattern="[A-Za-z0-9._]{5,40}" required />
+		<input type="password" name="password" placeholder="Password" pattern="[A-Za-z0-9\.\*$ß \\\?\/]{4,50}" required />
+		<input type="password" name="password2" placeholder="Repeat Password" required>
+		<input type="submit" value="Sign up" class="button" />
+	</form>
+	<div class="buttonContainer hidden" id="loginBtnCont">
+		<button id="loginBtn" class="button hidden">Sign in</button>
 	</div>
 </body>
 <script>
+	function toggleHide(itemId) {
+		let itemClassList = document.getElementById(itemId).classList;
+
+		if (itemClassList.contains("hidden"))
+			itemClassList.remove("hidden");
+		else itemClassList.add("hidden");
+	}
+
+	function toggleHideArray(arrayName) {
+		arrayName.forEach(element => {
+			toggleHide(element);
+		});
+	}
+	const loginItems = ["loginForm", "signupBtnCont", "signupBtn"];
+	const signupItems = ["signupForm", "loginBtnCont", "loginBtn"];
+
 	document.getElementById("signupBtn").addEventListener("click", () => {
-		document.location.replace("/signup");
-	})
+		toggleHideArray(loginItems);
+		toggleHideArray(signupItems);
+	});
+	document.getElementById("loginBtn").addEventListener("click", () => {
+		toggleHideArray(loginItems);
+		toggleHideArray(signupItems);
+	});
 </script>
 
 </html>

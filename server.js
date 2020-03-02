@@ -63,7 +63,7 @@ app.get('/', sessionChecker, (req, res) => {
 // route for user signup
 app.route('/signup')
 	.get(sessionChecker, (req, res) => {
-		res.sendFile(__dirname + '/public/signup.html');
+		res.sendFile(__dirname + '/public/login.html');
 	})
 	.post((req, res) => {
 		if (req.body.password === req.body.password2) {
