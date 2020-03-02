@@ -33,17 +33,13 @@
 	</div>
 </body>
 <script>
-	function toggleHide(itemId) {
-		let itemClassList = document.getElementById(itemId).classList;
-
-		if (itemClassList.contains("hidden"))
-			itemClassList.remove("hidden");
-		else itemClassList.add("hidden");
-	}
-
 	function toggleHideArray(arrayName) {
 		arrayName.forEach(element => {
-			toggleHide(element);
+			let itemClassList = document.getElementById(element).classList;
+
+			if (itemClassList.contains("hidden"))
+				itemClassList.remove("hidden");
+			else itemClassList.add("hidden");
 		});
 	}
 	const loginItems = ["loginForm", "signupBtnCont", "signupBtn"];
