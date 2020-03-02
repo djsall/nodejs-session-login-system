@@ -33,12 +33,16 @@
 	</div>
 </body>
 <script>
+	function elById(elementId) {
+		return document.getElementById(elementId);
+	}
+
 	function togleHideArrays(items) {
 		items.forEach(arrayName => {
 
 			arrayName.forEach(element => {
 
-				let itemClassList = document.getElementById(element).classList;
+				let itemClassList = elById(element).classList;
 
 				if (itemClassList.contains("hidden"))
 					itemClassList.remove("hidden");
@@ -52,10 +56,10 @@
 		["signupForm", "loginBtnCont", "loginBtn"]
 	];
 
-	document.getElementById("signupBtn").addEventListener("click", () => {
+	elById("signupBtn").addEventListener("click", () => {
 		togleHideArrays(items);
 	});
-	document.getElementById("loginBtn").addEventListener("click", () => {
+	elById("loginBtn").addEventListener("click", () => {
 		togleHideArrays(items);
 	});
 </script>
